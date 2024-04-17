@@ -1,23 +1,36 @@
-import Header from "./Components/Header";
+import { useState } from "react";
+import Header from "./Components/Header/Header";
+import CoreConcept from "./Components/CoreConcepts";
+import TabButton from "./Components/TabButton";
 import { CORE_CONCEPTS } from "./data";
 import "./index.css";
+import { EXAMPLES } from "./data";
 
-function CoreConcept({ image, title, description }) {
-  return (
-    <li>
-      <img src={image} alt={title} />
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </li>
-  );
-}
+export default function App() {
+  const [selectedTopic, setSelectedTopic] = useState();
+  let tabContent = <p>Please Select a Topic</p>;
 
-function App() {
+  if (selectedTopic) {
+    tabContent = (
+      <div id="tab-content">
+        <h3>{EXAMPLES[selectedTopic].title}</h3>
+        <p>{EXAMPLES[selectedTopic].description}</p>
+        <pre>
+          <code>{EXAMPLES[selectedTopic].code}</code>
+        </pre>
+      </div>
+    );
+  }
+
+  function selected(selectedButton) {
+    setSelectedTopic(selectedButton);
+  }
+  console.log("tab button executing");
   return (
     <div>
-      <Header></Header>
+      <Header />
       <main>
-        <div id="core-concepts">
+        <section id="core-concepts">
           <h2>Core Concepts</h2>
           <ul>
             <CoreConcept
@@ -29,10 +42,42 @@ function App() {
             <CoreConcept {...CORE_CONCEPTS[2]} />
             <CoreConcept {...CORE_CONCEPTS[3]} />
           </ul>
-        </div>
+        </section>
+        <section id="examples">
+          <h2>Example</h2>
+          <menu>
+            <TabButton
+              onSelect={() => {
+                selected("components");
+              }}
+            >
+              Components
+            </TabButton>
+            <TabButton
+              onSelect={() => {
+                selected("jsx");
+              }}
+            >
+              JSX
+            </TabButton>
+            <TabButton
+              onSelect={() => {
+                selected("props");
+              }}
+            >
+              Props
+            </TabButton>
+            <TabButton
+              onSelect={() => {
+                selected("state");
+              }}
+            >
+              State
+            </TabButton>
+          </menu>
+          {tabContent}
+        </section>
       </main>
     </div>
   );
 }
-
-export default App;
