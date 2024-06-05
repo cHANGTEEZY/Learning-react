@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function GameBoard({ onSelectSquare, board }) {
   // const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
